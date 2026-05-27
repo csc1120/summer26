@@ -22,19 +22,27 @@ public class Student extends Person {
 
     public Student(String firstName, String lastName) {
         super(firstName, lastName);
+        gpa = 2.0;
     }
 
     public Student(String firstName) {
        this(firstName, null);
     }
 
-    public boolean setGpa(double gpa) {
-        boolean changed = false;
-        if (gpa >= 0 && gpa <= 4) {
-            this.gpa = gpa;
-            changed = true;
+    /**
+     * Set the gpa for this student and returns the prior gpa
+     * @param gpa desired gpa
+     * @return previous gpa
+     *
+     * @throws IllegalArgumentException When an invalid gpa is passed to the method
+     */
+    public double setGpa(double gpa) throws IllegalArgumentException{
+        if (gpa < 0 || gpa > 4) {
+            throw new IllegalArgumentException("The gpa must be between 0 and 4. " + gpa + " is invalid");
         }
-        return changed;
+        double returnValue = this.gpa;
+        this.gpa = gpa;
+        return returnValue;
     }
 
     @Override

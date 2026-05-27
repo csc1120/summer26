@@ -8,7 +8,13 @@ public class Driver {
         System.out.println(tom);
         System.out.println(jane);
         Person.setDisplayFirst("last");
-        jane.setGpa(8);
+        try {
+            jane.setGpa(8);
+        } catch (IndexOutOfBoundsException | ArithmeticException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("Made it out of the try block");
+        }
         System.out.println(tom);
         System.out.println(ed);
         System.out.println(jane);
