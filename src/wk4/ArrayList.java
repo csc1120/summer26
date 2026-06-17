@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ArrayList<E> implements List<E> {
+    private Object[] data;
+
+    public ArrayList() {
+        data = new Object[0];
+    }
+
     /**
      * Returns the number of elements in this list.  If this list contains
      * more than {@code Integer.MAX_VALUE} elements, returns
@@ -15,7 +21,8 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public int size() {
-        return 0;
+        // O(1)
+        return data.length;
     }
 
     /**
@@ -25,7 +32,7 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     /**
@@ -92,8 +99,14 @@ public class ArrayList<E> implements List<E> {
      *                                       prevents it from being added to this list
      */
     @Override
-    public boolean add(E e) {
-        return false;
+    public boolean add(E element) {
+        Object[] newData = new Object[data.length + 1];
+        for (int i = 0; i < data.length; i++) {
+            newData[i] = data[i];
+        }
+        newData[data.length] = element;
+        data = newData;
+        return true;
     }
 
     /**
@@ -144,7 +157,10 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public E get(int index) {
-        return null;
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+        }
+        return (E) data[index];
     }
 
     /**
