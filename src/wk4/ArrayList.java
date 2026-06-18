@@ -1,9 +1,6 @@
 package wk4;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ArrayList<E> implements List<E> {
     private Object[] data;
@@ -41,7 +38,7 @@ public class ArrayList<E> implements List<E> {
      * at least one element {@code e} such that
      * {@code Objects.equals(o, e)}.
      *
-     * @param o element whose presence in this list is to be tested
+     * @param target element whose presence in this list is to be tested
      * @return {@code true} if this list contains the specified element
      * @throws ClassCastException   if the type of the specified element
      *                              is incompatible with this list
@@ -51,8 +48,8 @@ public class ArrayList<E> implements List<E> {
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public boolean contains(Object o) {
-        return false;
+    public boolean contains(Object target) {
+        return indexOf(target) >= 0;
     }
 
     /**
@@ -69,10 +66,10 @@ public class ArrayList<E> implements List<E> {
      *
      * @return an array containing all of the elements in this list in proper
      * sequence
-     * @see Arrays#asList(Object[])
      */
     @Override
     public Object[] toArray() {
+        // Quiz 4-3
         return new Object[0];
     }
 
@@ -87,7 +84,7 @@ public class ArrayList<E> implements List<E> {
      * classes should clearly specify in their documentation any restrictions
      * on what elements may be added.
      *
-     * @param e element to be appended to this list
+     * @param element element to be appended to this list
      * @return {@code true} (as specified by {@link Collection#add})
      * @throws UnsupportedOperationException if the {@code add} operation
      *                                       is not supported by this list
@@ -132,6 +129,7 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public boolean remove(Object o) {
+        // Quiz 4-3
         return false;
     }
 
@@ -144,7 +142,7 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public void clear() {
-
+        data = new Object[0];
     }
 
     /**
@@ -157,10 +155,14 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public E get(int index) {
+        checkIndexOutOfBounds(index);
+        return (E) data[index];
+    }
+
+    private void checkIndexOutOfBounds(int index) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
         }
-        return (E) data[index];
     }
 
     /**
@@ -183,7 +185,10 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public E set(int index, E element) {
-        return null;
+        checkIndexOutOfBounds(index);
+        E oldElement = (E) data[index];
+        data[index] = element;
+        return oldElement;
     }
 
     /**
@@ -207,7 +212,18 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public void add(int index, E element) {
-
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size());
+        }
+        Object[] newData = new Object[data.length + 1];
+        for (int i = 0; i < index; i++) {
+            newData[i] = data[i];
+        }
+        newData[index] = element;
+        for (int i = index; i < data.length; i++) {
+            newData[i + 1] = data[i];
+        }
+        data = newData;
     }
 
     /**
@@ -225,6 +241,7 @@ public class ArrayList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
+        // Quiz 4-3
         return null;
     }
 
@@ -235,7 +252,7 @@ public class ArrayList<E> implements List<E> {
      * {@code Objects.equals(o, get(i))},
      * or -1 if there is no such index.
      *
-     * @param o element to search for
+     * @param target element to search for
      * @return the index of the first occurrence of the specified element in
      * this list, or -1 if this list does not contain the element
      * @throws ClassCastException   if the type of the specified element
@@ -246,8 +263,14 @@ public class ArrayList<E> implements List<E> {
      *                              (<a href="Collection.html#optional-restrictions">optional</a>)
      */
     @Override
-    public int indexOf(Object o) {
-        return 0;
+    public int indexOf(Object target) {
+        int index = -1;
+        for (int i = 0; index == -1 && i < data.length; i++) {
+            if (Objects.equals(data[i], target)) {
+                index = i;
+            }
+        }
+        return index;
     }
 
     /**
