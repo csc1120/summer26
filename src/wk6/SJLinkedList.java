@@ -287,15 +287,19 @@ public class SJLinkedList<E> implements List<E> {
     @Override
     public E get(int index) {
         // valid? index >= 0 && size <
-        if(index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
-        }
+        validateIndex(index, index >= this.size);
         // go to index
         Node<E> current = this.head;
         for(int i = 0; i < index; ++i) {
             current = current.next;
         }
         return current.data; // return the DATA, not the node
+    }
+
+    private void validateIndex(int lowerIndex, boolean upperIndex) {
+        if (lowerIndex < 0 || upperIndex) {
+            throw new IndexOutOfBoundsException("Index: " + lowerIndex + ", Size: " + this.size);
+        }
     }
 
     /**
@@ -321,9 +325,7 @@ public class SJLinkedList<E> implements List<E> {
     @Override
     public E set(int index, E element) {
         // valid? index >= 0 && size <
-        if(index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
-        }
+        validateIndex(index, index >= this.size);
         // go to index
         Node<E> current = this.head;
         for(int i = 0; i < index; ++i) {
@@ -357,9 +359,7 @@ public class SJLinkedList<E> implements List<E> {
      */
     @Override
     public void add(int index, E element) {
-        if(index < 0 || index > this.size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
-        }
+        validateIndex(index, index > this.size);
         // go to index
         Node<E> previous = this.head;
         for(int i = 0; i < index - 1; ++i) { // get to previous node
@@ -391,9 +391,7 @@ public class SJLinkedList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
-        if(index < 0 || index >= this.size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
-        }
+        validateIndex(index, index >= this.size);
         // go to previous index
         Node<E> previous = this.head;
         for(int i = 0; i < index - 1; ++i) {
