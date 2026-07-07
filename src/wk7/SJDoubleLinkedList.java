@@ -5,7 +5,7 @@
  * Name: Sean Jones
  * Last Updated:
  */
-package wk6;
+package wk7;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -17,13 +17,7 @@ import java.util.Objects;
  * A simple implementation of a Single Linked List
  * @param <E> the element type stored in the List
  */
-public class SJLinkedList<E> implements List<E> {
-    // 4 different memory locations for a running program
-    // stack - local variables
-    // heap - objects
-    // String pool - Strings
-    // static - loaded before program runs
-
+public class SJDoubleLinkedList<E> implements List<E> {
     /**
      * Private static class to hold a single element of a single LinkedList.
      * <p/>
@@ -35,6 +29,7 @@ public class SJLinkedList<E> implements List<E> {
     private static class Node<E> {
         private E data;
         private Node<E> next;
+        private Node<E> previous;
 
         /**
          * A "Subordinate" constructor. It calls the "Master" constructor with a default
@@ -43,7 +38,7 @@ public class SJLinkedList<E> implements List<E> {
          * @param data the data to be stored in the Node
          */
         private Node(E data) {
-            this(data, null);
+            this(data, null, null);
         }
 
         /**
@@ -52,51 +47,24 @@ public class SJLinkedList<E> implements List<E> {
          * @param data the data to be stored in the Node
          * @param next a reference to the next Node in the List
          */
-        private Node(E data, Node<E> next) {
+        private Node(E data, Node<E> previous, Node<E> next) {
             this.data = data;
             this.next = next;
-        }
-    }
-
-    private class SJIterator<E> implements Iterator<E> {
-        private Node next;
-        private E lastReturned;
-
-        private SJIterator() {
-            this.next = head;
-            this.lastReturned = null;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return next != null;
-        }
-
-        @Override
-        public E next() {
-            // update lastReturned
-            this.lastReturned = (E) next.data;
-            // update next
-            next = next.next;
-            // return lastReturned
-            return lastReturned;
-        }
-
-        @Override
-        public void remove() {
-            SJLinkedList.this.remove(lastReturned);
+            this.previous = previous;
         }
     }
 
     private int size;
     private Node<E> head;
+    private Node<E> tail;
 
     /**
      * No-param constructor that sets the sie to 0 and the head to null
      */
-    public SJLinkedList() {
+    public SJDoubleLinkedList() {
         this.size = 0;
         this.head = null;
+        this.tail = null;
     }
 
     /**
@@ -163,7 +131,7 @@ public class SJLinkedList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new SJIterator<>();
+        return null;
     }
 
     @Override
